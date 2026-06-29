@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2651cb4e512a5a94aa7198608064648d, type: 3}
+  m_Name: WoodSpear_Weapon_Card
+  m_EditorClassIdentifier: Assembly-CSharp::ItemCardData
+  cardName: "Gi\xE1o G\u1ED7"
+  apCostText: 1
+  positiveEffect: "G\xE2y 10 s\xE1t th\u01B0\u01A1ng, th\xEAm 3 HIT (ch\u1EC9 t\xEDnh
+    cho v\u0169 kh\xED n\xE0y)"
+  negativeEffect: 
+  rangeText: "C\u1EADn chi\u1EBFn"
+  tokenGenerationText: <size=150%><voffset=10>  <sprite index=0>  </voffset></size>
+  delayAGI: 5
+  endBattleEffect: 
+  craftingRecipeText: "1 C\xE0nh g\u1ED7 + 1 D\xE2y bu\u1ED9c"
+  flavorText: 
+  cardArt: {fileID: 21300000, guid: d74f6d87ec08ac54aa130f3be6360f36, type: 3}
+  frameArt: {fileID: 21300000, guid: 6753d57cb4100ab40a8946f4f801d9c1, type: 3}
+  typeIcon: {fileID: 21300000, guid: 17fe8cd77c2d8174288e2f52679df02c, type: 3}
+  apCost: 1
+  maxDurability: 60
+  usableWhenBroken: 1
+  requiredTokens: []
+  consumeTokensOnUse: 1
+  tokensToAdd:
+  - {fileID: 11400000, guid: 8bf7b253dde8ede4cad3005f07f5ad2e, type: 2}

@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2651cb4e512a5a94aa7198608064648d, type: 3}
+  m_Name: Waterskin_Item_Card
+  m_EditorClassIdentifier: Assembly-CSharp::ItemCardData
+  cardName: "B\xECnh N\u01B0\u1EDBc Da Th\xFA"
+  apCostText: 0
+  positiveEffect: "C\u1ED9ng 1 AP"
+  negativeEffect: 
+  rangeText: "M\u1ED9t ng\u01B0\u1EDDi cho ch\xEDnh b\u1EA1n ho\u1EB7c \u0111\u1ED3ng
+    \u0111\u1ED9i"
+  tokenGenerationText: "1 token nguy\xEAn t\u1ED1 n\u01B0\u1EDBc"
+  endBattleEffect: "Nh\u1EADn \"B\xECnh n\u01B0\u1EDBc da th\xFA (tr\u1ED1ng)\" tr\u1EA3
+    l\u1EA1i v\u1EC1 t\xFAi \u0111\u1ED3"
+  craftingRecipeText: "6 Da thu\u1ED9c + 2 D\xE2y bu\u1ED9c"
+  flavorText: 
+  cardArt: {fileID: 21300000, guid: 145ffe2395b9cc441bc9b40c6cd16962, type: 3}
+  frameArt: {fileID: 21300000, guid: f4794be589a77764a8503ad9e4e756d6, type: 3}
+  typeIcon: {fileID: 0}
+  apCost: 0
+  maxDurability: 6
+  usableWhenBroken: 1
+  requiredTokens: []
+  consumeTokensOnUse: 1
+  tokensToAdd:
+  - {fileID: 11400000, guid: 07ac4bec1ce4284408583e0e42e72557, type: 2}

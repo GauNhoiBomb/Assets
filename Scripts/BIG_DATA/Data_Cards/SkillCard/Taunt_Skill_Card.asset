@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c668b1726117424abcd51bc8caedc8a, type: 3}
+  m_Name: Taunt_Skill_Card
+  m_EditorClassIdentifier: Assembly-CSharp::SkillCardData
+  cardName: "Khi\xEAu Kh\xEDch"
+  apCostText: 1 AP
+  positiveEffect: "Khi\u1EBFn \u0111\u1ED1i th\u1EE7 quay sang nh\u1EAFm t\u1EDBi
+    ng\u01B0\u1EDDi s\u1EED d\u1EE5ng, l\xE0m \u0111\u1ED1i ph\u01B0\u01A1ng b\u1ECB
+    \"K\xEDch \u0111\u1ED9ng\""
+  negativeEffect: "Tr\u1EEB 1 AP m\u1ED7i l\u1EA7n b\u1ECB nh\u1EADn c\xF4ng k\xEDch"
+  rangeText: "To\xE0n b\u1ED9 m\u1ED9t khu v\u1EF1c"
+  tokenConsumptionText: 
+  tokenGenerationText: "1 token \"K\xEDch \u0111\u1ED9ng\""
+  endBattleEffect: 
+  craftingRecipeText: 
+  flavorText: 
+  cardArt: {fileID: 21300000, guid: 9c516668e20814e4e86625e71c9ee4db, type: 3}
+  frameArt: {fileID: 21300000, guid: f4794be589a77764a8503ad9e4e756d6, type: 3}
+  typeIcon: {fileID: 0}
+  apCost: 1
+  mpCost: 5
+  isAutoPlayOnDraw: 0
+  requiredTokens: []
+  consumeTokensOnUse: 1
+  tokensToAdd: []
+  isLinkSkill: 0
+  linkedCharacterIcon: {fileID: 0}

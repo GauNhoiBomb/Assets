@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e252b4e7fd919f40aa34785f8a5e6fa, type: 3}
+  m_Name: New Outfit Data
+  m_EditorClassIdentifier: Assembly-CSharp::OutfitData
+  outfitName: "T\xEAn Trang Ph\u1EE5c"
+  element: 0
+  description: "M\xF4 t\u1EA3 b\u1ED9 trang ph\u1EE5c..."
+  baseCombatBonus:
+    maxHP: 0
+    maxMP: 0
+    HIT: 0
+    EVA: 0
+    STR: 5
+    CON: 0
+    MAG: 0
+    RES: 0
+    AGI: 0
+    LUK: 0
+    MOV: -1
+  baseManagementBonus:
+    agriculture: 0
+    industry: 0
+    commerce: 0
+    militarySecurity: 0
+    socioPolitics: 0
+    wisdom: 0
+    activity: 0
+  innateOutfitSkills: []
+  techTreeNodes:
+  - nodeID: Center_0
+    requiredNodeIDs: []
+    uiPosition: {x: 0, y: 0}
+    nodeType: 0
+    isUnlocked: 0
+    unlockCosts: []
+    meshesToEnable: []
+    meshesToDisable: []
+    bonusCombatStats:
+      maxHP: 0
+      maxMP: 0
+      HIT: 0
+      EVA: 0
+      STR: 1
+      CON: 0
+      MAG: 0
+      RES: 0
+      AGI: 0
+      LUK: 0
+      MOV: 0
+    bonusManagementStats:
+      agriculture: 0
+      industry: 0
+      commerce: 0
+      militarySecurity: 0
+      socioPolitics: 0
+      wisdom: 0
+      activity: 0
+    bonusMaxAP: 0
+    bonusItemCardSlots: 0
+    bonusSkillCardSlots: 0
+    newSkills: []
+  - nodeID: X0_Y1
+    requiredNodeIDs:
+    - Center_0
+    uiPosition: {x: 0, y: 1}
+    nodeType: 0
+    isUnlocked: 0
+    unlockCosts: []
+    meshesToEnable: []
+    meshesToDisable: []
+    bonusCombatStats:
+      maxHP: 0
+      maxMP: 0
+      HIT: 0
+      EVA: 0
+      STR: 0
+      CON: 0
+      MAG: 0
+      RES: 0
+      AGI: 2
+      LUK: 0
+      MOV: 0
+    bonusManagementStats:
+      agriculture: 0
+      industry: 0
+      commerce: 0
+      militarySecurity: 0
+      socioPolitics: 0
+      wisdom: 0
+      activity: 0
+    bonusMaxAP: 0
+    bonusItemCardSlots: 0
+    bonusSkillCardSlots: 0
+    newSkills: []

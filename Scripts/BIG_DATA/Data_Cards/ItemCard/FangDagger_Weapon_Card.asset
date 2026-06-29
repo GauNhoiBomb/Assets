@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2651cb4e512a5a94aa7198608064648d, type: 3}
+  m_Name: FangDagger_Weapon_Card
+  m_EditorClassIdentifier: Assembly-CSharp::ItemCardData
+  cardName: "Dao Nanh Th\xFA"
+  apCostText: 1
+  positiveEffect: "G\xE2y 5 s\xE1t th\u01B0\u01A1ng, th\xEAm 5 Agi cho l\u01B0\u1EE3t
+    ti\u1EBFp theo"
+  negativeEffect: 
+  rangeText: "C\u1EADn chi\u1EBFn"
+  tokenGenerationText: "1 token ch\xE9m"
+  endBattleEffect: 
+  craftingRecipeText: "1 Nanh th\xFA + 1 D\xE2y bu\u1ED9c + 1 Da thu\u1ED9c"
+  flavorText: 
+  cardArt: {fileID: 21300000, guid: 0970c41f026bcac43a87c1119353db4e, type: 3}
+  frameArt: {fileID: 21300000, guid: 6753d57cb4100ab40a8946f4f801d9c1, type: 3}
+  typeIcon: {fileID: 21300000, guid: ae48a4d3044d5c4499e6d4421c9a3267, type: 3}
+  apCost: 1
+  maxDurability: 50
+  usableWhenBroken: 1
+  requiredTokens: []
+  consumeTokensOnUse: 1
+  tokensToAdd:
+  - {fileID: 11400000, guid: 6c72da12d0189e8489dea457c286aecd, type: 2}

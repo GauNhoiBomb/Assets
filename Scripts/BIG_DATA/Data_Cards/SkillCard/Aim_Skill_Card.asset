@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c668b1726117424abcd51bc8caedc8a, type: 3}
+  m_Name: Aim_Skill_Card
+  m_EditorClassIdentifier: Assembly-CSharp::SkillCardData
+  cardName: "Nh\u1EAFm Chu\u1EA9n"
+  apCostText: 
+  positiveEffect: "C\u1ED9ng th\xEAm 10 HIT t\u1EA1i l\u01B0\u1EE3t k\xEDch ho\u1EA1t,
+    c\u1ED9ng th\xEAm 10 HIT n\u1EEFa n\u1EBFu kh\xF4ng ph\u1EA3i v\u0169 kh\xED
+    \"C\u1EADn chi\u1EBFn\""
+  negativeEffect: 
+  rangeText: "B\u1EA3n th\xE2n"
+  tokenConsumptionText: 
+  tokenGenerationText: 
+  endBattleEffect: 
+  craftingRecipeText: 
+  flavorText: 
+  cardArt: {fileID: 21300000, guid: bc971c8c188a1c6419cf2d83de619f88, type: 3}
+  frameArt: {fileID: 21300000, guid: f4794be589a77764a8503ad9e4e756d6, type: 3}
+  typeIcon: {fileID: 0}
+  apCost: 0
+  mpCost: 10
+  isAutoPlayOnDraw: 0
+  requiredTokens: []
+  consumeTokensOnUse: 1
+  tokensToAdd: []
+  isLinkSkill: 0
+  linkedCharacterIcon: {fileID: 0}

@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c668b1726117424abcd51bc8caedc8a, type: 3}
+  m_Name: ChainStrike_Skill_Card
+  m_EditorClassIdentifier: Assembly-CSharp::SkillCardData
+  cardName: "Li\xEAn Ho\xE0n \u0110\u1EADp"
+  apCostText: 
+  positiveEffect: "G\u1EA5p 3 l\u1EA7n s\xE1t th\u01B0\u01A1ng v\u1EDBi v\u0169 kh\xED
+    \u0111\u1EADp \u0111\u01B0\u1EE3c ch\u1ECDn"
+  negativeEffect: "Gi\u1EA3m 1 \u0111\u1ED9 b\u1EC1n v\u0169 kh\xED \u0111\u01B0\u1EE3c
+    ch\u1ECDn"
+  rangeText: "Ph\u1EE5 thu\u1ED9c v\xE0o v\u0169 kh\xED"
+  tokenConsumptionText: "3 Token \u0111\u1EADp"
+  tokenGenerationText: 
+  endBattleEffect: 
+  craftingRecipeText: 
+  flavorText: 
+  cardArt: {fileID: 21300000, guid: 7711e2bb739020847bb0dce37c66b5dd, type: 3}
+  frameArt: {fileID: 21300000, guid: f4794be589a77764a8503ad9e4e756d6, type: 3}
+  typeIcon: {fileID: 0}
+  apCost: 0
+  mpCost: 7
+  isAutoPlayOnDraw: 0
+  requiredTokens: []
+  consumeTokensOnUse: 1
+  tokensToAdd: []
+  isLinkSkill: 0
+  linkedCharacterIcon: {fileID: 0}

@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2651cb4e512a5a94aa7198608064648d, type: 3}
+  m_Name: FireTorch_Weapon_Card
+  m_EditorClassIdentifier: Assembly-CSharp::ItemCardData
+  cardName: "\u0110u\u1ED1c L\u1EEDa"
+  apCostText: 1
+  positiveEffect: "G\xE2y 7 s\xE1t th\u01B0\u01A1ng, c\xF3 th\u1EC3 khi\u1EBFn \u0111\u1ED1i
+    ph\u01B0\u01A1ng \"B\u1ECFng r\xE1t\""
+  negativeEffect: 
+  rangeText: "C\u1EADn chi\u1EBFn"
+  tokenGenerationText: "1 token nguy\xEAn t\u1ED1 l\u1EEDa"
+  endBattleEffect: " Sau khi \u0111\u1ED9 b\u1EC1n v\u1EC1 0 // H\u1ED3i l\u1EA1i
+    1 \u0111\u1ED9 b\u1EC1n"
+  craftingRecipeText: "1 Mi\u1EBFng nh\u1EF1a th\xF4ng + C\u1ECF \u0111u\xF4i ng\u1EF1a
+    + 1 C\xE0nh g\u1ED7"
+  flavorText: 
+  cardArt: {fileID: 21300000, guid: 36d2e3b2dda973a469a80b5ed91b3858, type: 3}
+  frameArt: {fileID: 21300000, guid: 6753d57cb4100ab40a8946f4f801d9c1, type: 3}
+  typeIcon: {fileID: 0}
+  apCost: 1
+  maxDurability: 25
+  usableWhenBroken: 1
+  requiredTokens: []
+  consumeTokensOnUse: 1
+  tokensToAdd:
+  - {fileID: 11400000, guid: 6ac7e21b496e65d43b36047e6f329de9, type: 2}

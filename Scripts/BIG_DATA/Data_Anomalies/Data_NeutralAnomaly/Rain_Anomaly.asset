@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a045beafe1b97c49b1fe82b78cfcecc, type: 3}
+  m_Name: Rain_Anomaly
+  m_EditorClassIdentifier: Assembly-CSharp::AnomalyData
+  anomalyName: "M\u01B0a"
+  description: "M\u1ED7i \u0111\u1EA7u l\u01B0\u1EE3t \u0111\u01B0\u1EE3c th\xEAm
+    m\u1ED9t token n\u01B0\u1EDBc."
+  icon: {fileID: 21300000, guid: 580270c3591456041959486678daaa9c, type: 3}
+  anomalyType: 2
+  triggerTime: 0
+  effectCode: 
+  tokensToGenerate:
+  - {fileID: 11400000, guid: 07ac4bec1ce4284408583e0e42e72557, type: 2}

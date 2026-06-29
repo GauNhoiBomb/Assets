@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2651cb4e512a5a94aa7198608064648d, type: 3}
+  m_Name: StoneHammer_Weapon_Card
+  m_EditorClassIdentifier: Assembly-CSharp::ItemCardData
+  cardName: "B\xFAa \u0110\xE1"
+  apCostText: 1
+  positiveEffect: "G\xE2y 22 s\xE1t th\u01B0\u01A1ng"
+  negativeEffect: "Gi\u1EA3m 5 Agi v\xE0 5 Hit cho l\u01B0\u1EE3t t\u1EDBi"
+  rangeText: "C\u1EADn chi\u1EBFn"
+  tokenGenerationText: "1 token \u0111\u1EADp"
+  endBattleEffect: 
+  craftingRecipeText: "1 C\xE0nh g\u1ED7 + 5 \u0110\xE1 (b\u1EA5t k\u1EF3) + 1 D\xE2y
+    bu\u1ED9c"
+  flavorText: 
+  cardArt: {fileID: 21300000, guid: 6ea7c05b0a23b6444a9b7180127528fa, type: 3}
+  frameArt: {fileID: 21300000, guid: 6753d57cb4100ab40a8946f4f801d9c1, type: 3}
+  typeIcon: {fileID: 21300000, guid: b9f66773ea25b8e44923903a8d494279, type: 3}
+  apCost: 1
+  maxDurability: 120
+  usableWhenBroken: 1
+  requiredTokens: []
+  consumeTokensOnUse: 1
+  tokensToAdd:
+  - {fileID: 11400000, guid: c72558cb23ff5574a92061acde9be8c2, type: 2}

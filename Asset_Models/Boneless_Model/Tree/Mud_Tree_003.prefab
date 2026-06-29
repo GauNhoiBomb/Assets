@@ -1,0 +1,180 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &675307459181743916
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3602496631027441491}
+  - component: {fileID: 3181216014835991515}
+  m_Layer: 0
+  m_Name: Mud_Tree_003_Capsule_Collider_002
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3602496631027441491
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 675307459181743916}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.09842552, y: -0.5651631, z: -0.059145596, w: 0.81694853}
+  m_LocalPosition: {x: -0.2, y: 2.3, z: -0.56}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6765496233713794720}
+  m_LocalEulerAnglesHint: {x: -13.16, y: -69.45, z: 0.86}
+--- !u!136 &3181216014835991515
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 675307459181743916}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.45
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &5542509997929968906
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3075796634389707121}
+  - component: {fileID: 696684045041445131}
+  m_Layer: 0
+  m_Name: Mud_Tree_003_Capsule_Collider_001
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3075796634389707121
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5542509997929968906}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.15079804, y: 0.019371174, z: 0.12592964, w: 0.98031956}
+  m_LocalPosition: {x: -0.14, y: 0.53, z: -0.12}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6765496233713794720}
+  m_LocalEulerAnglesHint: {x: -17.49, y: 0, z: 14.64}
+--- !u!136 &696684045041445131
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5542509997929968906}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.55
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!1001 &6514852168799721803
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 28e58d005cf0ab441a262abb9b02e3c0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 603.1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 28e58d005cf0ab441a262abb9b02e3c0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 30.16821
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 28e58d005cf0ab441a262abb9b02e3c0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 482.9
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 28e58d005cf0ab441a262abb9b02e3c0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 28e58d005cf0ab441a262abb9b02e3c0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 28e58d005cf0ab441a262abb9b02e3c0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 28e58d005cf0ab441a262abb9b02e3c0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 28e58d005cf0ab441a262abb9b02e3c0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 28e58d005cf0ab441a262abb9b02e3c0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 28e58d005cf0ab441a262abb9b02e3c0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 28e58d005cf0ab441a262abb9b02e3c0, type: 3}
+      propertyPath: m_Name
+      value: Mud_Tree_003
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 28e58d005cf0ab441a262abb9b02e3c0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3075796634389707121}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 28e58d005cf0ab441a262abb9b02e3c0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3602496631027441491}
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 28e58d005cf0ab441a262abb9b02e3c0, type: 3}
+--- !u!4 &6765496233713794720 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 28e58d005cf0ab441a262abb9b02e3c0, type: 3}
+  m_PrefabInstance: {fileID: 6514852168799721803}
+  m_PrefabAsset: {fileID: 0}

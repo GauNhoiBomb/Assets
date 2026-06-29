@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56f7ad23d4b5e7d4d9bdec9641d2cc00, type: 3}
+  m_Name: Hiu_Man_Test
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterStats
+  characterName: "T\xEAn nh\xE2n v\u1EADt"
+  role: 0
+  currentOutfit: {fileID: 0}
+  portrait: {fileID: 0}
+  level: 1
+  skillPointsPerLevel: 5
+  currentSkillPoints: 0
+  combatStats:
+    maxHP: 100
+    maxMP: 50
+    HIT: 80
+    EVA: 5
+    STR: 10
+    CON: 10
+    MAG: 5
+    RES: 10
+    AGI: 10
+    LUK: 5
+    MOV: 2
+  upgradeSystem:
+    costMaxHP: 0
+    costMaxMP: 0
+    costHIT: 0
+    costEVA: 0
+    costSTR: 0
+    costCON: 0
+    costMAG: 0
+    costRES: 0
+    costAGI: 0
+    costLUK: 0
+    costMOV: 0
+    hpGainPerUpgrade: 0
+    mpGainPerUpgrade: 0
+  managementStats:
+    agriculture:
+      baseValue: 4
+      bonusValue: 0
+    industry:
+      baseValue: 3
+      bonusValue: 0
+    commerce:
+      baseValue: 1
+      bonusValue: 0
+    militarySecurity:
+      baseValue: 0
+      bonusValue: 0
+    socioPolitics:
+      baseValue: 0
+      bonusValue: 0
+    wisdom:
+      baseValue: 0
+      bonusValue: 0
+    activity:
+      baseValue: 0
+      bonusValue: 0
+  innateSkills: []
