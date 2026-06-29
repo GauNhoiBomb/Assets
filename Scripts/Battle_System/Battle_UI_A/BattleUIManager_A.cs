@@ -65,9 +65,11 @@ public class BattleUIManager_A : MonoBehaviour
         if (normalBottomUIPanel != null) normalBottomUIPanel.SetActive(true);
         if (tacticalButtonsPanel != null) tacticalButtonsPanel.SetActive(false);
 
+        // 💡 BẬT CẢ 2 CAMERA VÀ THIẾT LẬP PRIORITY ĐỂ BLENDING MƯỢT MÀ
         if (vcamDefault != null)
         {
             vcamDefault.gameObject.SetActive(true);
+            vcamDefault.Priority = 20; // Đặt quyền ưu tiên cao hơn lúc khởi đầu
             vcamDefault.Target.TrackingTarget = null;
             vcamDefault.Target.LookAtTarget = null;
             defaultDefaultRotation = vcamDefault.transform.rotation;
@@ -75,8 +77,9 @@ public class BattleUIManager_A : MonoBehaviour
 
         if (vcamTactical != null)
         {
+            vcamTactical.gameObject.SetActive(true);
+            vcamTactical.Priority = 10; // Đặt quyền ưu tiên thấp hơn để chạy ngầm
             defaultTacticalYRotation = vcamTactical.transform.eulerAngles.y;
-            vcamTactical.gameObject.SetActive(false);
         }
 
         if (freeCameraScript != null) freeCameraScript.enabled = false;
@@ -88,9 +91,21 @@ public class BattleUIManager_A : MonoBehaviour
         currentEnemyTarget = enemyTarget;
     }
 
+    // 💡 HÀM MỚI: Gọi để gán Focus và tự động reset Camera về Default
+    public void SetActiveCharacterFocus(Transform newCharacter)
+    {
+        activeCharacter = newCharacter;
+        // Trả camera về góc Default nếu trước đó người chơi đang ngắm Grid chưa thoát ra
+        if (vcamTactical != null && vcamTactical.Priority > 10)
+        {
+            CancelMoveMode();
+        }
+    }
+
     void Update()
     {
-        if (vcamDefault != null && vcamDefault.gameObject.activeSelf)
+        // Kiểm tra xem camera Default có đang chiếm quyền không (Priority lớn hơn Tactical)
+        if (vcamDefault != null && vcamDefault.Priority > vcamTactical.Priority)
         {
             if (currentEnemyTarget != null && activeCharacter != null)
             {
@@ -99,13 +114,7 @@ public class BattleUIManager_A : MonoBehaviour
                 // ==========================================================
                 if (useAutoCameraTuning)
                 {
-                    // 1. Chỉ đo khoảng cách Z vật lý (VD: 5 mét, 15 mét, 25 mét...)
                     float actualZDist = Mathf.Abs(currentEnemyTarget.position.z - activeCharacter.position.z);
-
-                    // 💡 THÊM DÒNG NÀY VÀO ĐỂ BÁO CÁO RA CONSOLE:
-                    //Debug.Log("🔍 KHOẢNG CÁCH Z THỰC TẾ LÀ: " + actualZDist);
-
-                    // 2. Nạp thẳng khoảng cách thực vào biểu đồ! Bản đồ to bao nhiêu cũng cân được hết.
                     baseCameraDistance = distanceCurve.Evaluate(actualZDist);
                     cameraHeightOffset = heightCurve.Evaluate(actualZDist);
                 }
@@ -143,7 +152,6 @@ public class BattleUIManager_A : MonoBehaviour
         }
     }
 
-    // --- CÁC HÀM BÊN DƯỚI GIỮ NGUYÊN HOÀN TOÀN ---
     public void OnMoveClicked()
     {
         if (activeCharacter != null) originalPosition = activeCharacter.position;
@@ -155,8 +163,9 @@ public class BattleUIManager_A : MonoBehaviour
         if (battleGrid != null) battleGrid.SetGridVisibility(true, false);
         if (gridMouseController != null) gridMouseController.isTacticalMoveMode = true;
 
-        if (vcamDefault != null) vcamDefault.gameObject.SetActive(false);
-        if (vcamTactical != null) vcamTactical.gameObject.SetActive(true);
+        // 💡 CHUYỂN GÓC NHÌN BẰNG PRIORITY MƯỢT MÀ
+        if (vcamDefault != null) vcamDefault.Priority = 10;
+        if (vcamTactical != null) vcamTactical.Priority = 20;
 
         OnFocusCamButtonClicked();
     }
@@ -230,10 +239,11 @@ public class BattleUIManager_A : MonoBehaviour
 
         if (freeCameraScript != null) freeCameraScript.enabled = false;
 
-        if (vcamTactical != null) vcamTactical.gameObject.SetActive(false);
+        // 💡 TRẢ LẠI GÓC NHÌN DEFAULT BẰNG PRIORITY
+        if (vcamTactical != null) vcamTactical.Priority = 10;
         if (vcamDefault != null)
         {
-            vcamDefault.gameObject.SetActive(true);
+            vcamDefault.Priority = 20;
             vcamDefault.Target.TrackingTarget = null;
             vcamDefault.Target.LookAtTarget = null;
         }
@@ -247,11 +257,13 @@ public class BattleUIManager_A : MonoBehaviour
     public void ResetTurnState() { hasPlayedCardThisTurn = false; if (waitEndText != null) waitEndText.text = "WAIT"; }
     public void MarkCardPlayed() { hasPlayedCardThisTurn = true; if (waitEndText != null) waitEndText.text = "END"; }
     public void SetWaitPhaseState() { hasPlayedCardThisTurn = true; if (waitEndText != null) waitEndText.text = "END"; }
+
     public void OnWaitOrEndClicked()
     {
         if (!hasPlayedCardThisTurn) { if (battleManager != null) battleManager.OnWaitButtonClicked(); }
         else { if (battleManager != null) battleManager.PlayerEndTurn(); ResetTurnState(); }
     }
+
     public void OnRunClicked() { if (runConfirmPanel != null) runConfirmPanel.SetActive(true); }
     public void OnConfirmRunClicked() { Debug.Log("BỎ CHẠY THÀNH CÔNG!"); }
     public void OnCancelRunClicked() { if (runConfirmPanel != null) runConfirmPanel.SetActive(false); }
