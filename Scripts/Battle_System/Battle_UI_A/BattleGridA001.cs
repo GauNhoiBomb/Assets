@@ -53,8 +53,6 @@ public class BattleGridA001 : MonoBehaviour
     public int playerMoveDistance = 3;
 
     public List<GameObject> activeCells = new List<GameObject>();
-
-    // 💡 MỚI THÊM: Cuốn sổ "VIP" lưu trữ các ô Xanh Lá hợp lệ
     [HideInInspector] public List<GameObject> validMoveCells = new List<GameObject>();
 
     private Vector3 lastPlayerPos;
@@ -118,15 +116,20 @@ public class BattleGridA001 : MonoBehaviour
 
     public void RefreshGridTacticalColors()
     {
-        int playerLayerIndex = LayerMask.NameToLayer(playerGridLayer);
+        if (activePlayerUnit == null)
+        {
+            validMoveCells.Clear();
+            return;
+        }
 
-        // 💡 Xóa sạch sổ VIP cũ mỗi lần vẽ lại đường
+        int playerLayerIndex = LayerMask.NameToLayer(playerGridLayer);
         validMoveCells.Clear();
 
         List<GameObject> obstacleCells = new List<GameObject>();
         List<GameObject> allyCells = new List<GameObject>();
         GameObject startCell = null;
 
+        // BƯỚC 1: QUÉT TÌM VẬT THỂ
         foreach (GameObject cell in activeCells)
         {
             Renderer cellRenderer = cell.GetComponentInChildren<Renderer>();
@@ -135,37 +138,30 @@ public class BattleGridA001 : MonoBehaviour
             cellRenderer.sharedMaterial = matWhite;
             Vector3 scanPos = cell.transform.position + new Vector3(0, 0.5f, 0);
 
-            if (Physics.CheckSphere(scanPos, 1.5f, obstacleLayer))
+            bool isActivePlayerHere = false;
+            float distToPlayerX = Mathf.Abs(cell.transform.position.x - activePlayerUnit.position.x);
+            float distToPlayerZ = Mathf.Abs(cell.transform.position.z - activePlayerUnit.position.z);
+            if (distToPlayerX < 2f && distToPlayerZ < 2f) isActivePlayerHere = true;
+
+            if (isActivePlayerHere)
+            {
+                startCell = cell;
+                cellRenderer.sharedMaterial = matGreen;
+                validMoveCells.Add(cell);
+            }
+            else if (Physics.CheckSphere(scanPos, 1.5f, allyLayer))
+            {
+                allyCells.Add(cell);
+                cellRenderer.sharedMaterial = matBlue;
+            }
+            else if (Physics.CheckSphere(scanPos, 1.5f, obstacleLayer))
             {
                 obstacleCells.Add(cell);
                 cellRenderer.sharedMaterial = matRed;
             }
-            else
-            {
-                bool isActivePlayerHere = false;
-                if (activePlayerUnit != null)
-                {
-                    float distToPlayerX = Mathf.Abs(cell.transform.position.x - activePlayerUnit.position.x);
-                    float distToPlayerZ = Mathf.Abs(cell.transform.position.z - activePlayerUnit.position.z);
-                    if (distToPlayerX < 2f && distToPlayerZ < 2f) isActivePlayerHere = true;
-                }
-
-                if (isActivePlayerHere)
-                {
-                    startCell = cell;
-                    cellRenderer.sharedMaterial = matGreen;
-
-                    // 💡 Ghi danh ô đang đứng vào sổ VIP (Tùy chọn: Xóa dòng này nếu bạn không muốn Click vào chính mình)
-                    validMoveCells.Add(cell);
-                }
-                else if (Physics.CheckSphere(scanPos, 1.5f, allyLayer))
-                {
-                    allyCells.Add(cell);
-                    cellRenderer.sharedMaterial = matBlue;
-                }
-            }
         }
 
+        // BƯỚC 2: TÍNH TOÁN ĐƯỜNG ĐI XANH LÁ (CHO PHÉP XUYÊN QUA ĐỒNG ĐỘI)
         if (startCell != null)
         {
             Queue<GameObject> queue = new Queue<GameObject>();
@@ -184,7 +180,9 @@ public class BattleGridA001 : MonoBehaviour
                 foreach (GameObject neighbor in activeCells)
                 {
                     if (neighbor.layer != playerLayerIndex) continue;
-                    if (obstacleCells.Contains(neighbor) || allyCells.Contains(neighbor)) continue;
+
+                    // 💡 SỬA ĐỔI QUAN TRỌNG: Chỉ chặn nếu là Đá Đỏ. Không chặn Đồng đội Xanh lam nữa.
+                    if (obstacleCells.Contains(neighbor)) continue;
 
                     if (!distances.ContainsKey(neighbor))
                     {
@@ -192,13 +190,18 @@ public class BattleGridA001 : MonoBehaviour
                         if (dist > (cellSize - 0.1f) && dist < (cellSize + 0.1f))
                         {
                             distances[neighbor] = currentDist + 1;
+
+                            // CHÌA KHÓA: Vẫn đẩy ô có đồng đội vào hàng đợi để thuật toán loang tiếp sang ô phía sau
                             queue.Enqueue(neighbor);
 
-                            Renderer neighborRen = neighbor.GetComponentInChildren<Renderer>();
-                            if (neighborRen != null) neighborRen.sharedMaterial = matGreen;
+                            // NHƯNG: CHỈ biến thành ô Xanh Lá (Cho phép Click đứng lại) nếu KHÔNG CÓ đồng đội
+                            if (!allyCells.Contains(neighbor))
+                            {
+                                Renderer neighborRen = neighbor.GetComponentInChildren<Renderer>();
+                                if (neighborRen != null) neighborRen.sharedMaterial = matGreen;
 
-                            // 💡 Ghi danh ô Xanh Lá vào sổ VIP!
-                            validMoveCells.Add(neighbor);
+                                validMoveCells.Add(neighbor);
+                            }
                         }
                     }
                 }
@@ -225,13 +228,9 @@ public class BattleGridA001 : MonoBehaviour
             if (ren != null)
             {
                 if (child.gameObject.layer == LayerMask.NameToLayer("PlayerGridLayerA001"))
-                {
                     ren.enabled = showPlayerGrid;
-                }
                 else if (child.gameObject.layer == LayerMask.NameToLayer("EnemyGridLayerA001"))
-                {
                     ren.enabled = showEnemyGrid;
-                }
             }
         }
     }

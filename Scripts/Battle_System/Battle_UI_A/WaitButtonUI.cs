@@ -1,12 +1,10 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using TMPro; // Thư viện để đổi chữ trên nút
 
 public class WaitButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private TurnTimelineManager timelineManager;
     private BattleManager bm;
-    private TextMeshProUGUI buttonText;
 
     void Start()
     {
@@ -14,20 +12,9 @@ public class WaitButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         timelineManager = FindAnyObjectByType<TurnTimelineManager>();
         bm = FindAnyObjectByType<BattleManager>();
 
-        // Tìm dòng chữ (Text) gắn trên nút này
-        buttonText = GetComponentInChildren<TextMeshProUGUI>();
-    }
-
-    void Update()
-    {
-        // 💡 Tự động đổi chữ trên nút tùy theo trạng thái của Lượt đi
-        if (bm != null && buttonText != null)
-        {
-            if (bm.state == BattleState.NormalTurnPhase)
-                buttonText.text = "WAIT"; // Lần đầu vào lượt là Wait
-            else if (bm.state == BattleState.WaitTurnPhase)
-                buttonText.text = "END";  // Lần 2 quay lại lượt biến thành End
-        }
+        // 💡 ĐÃ XÓA: Hàm Update() và biến buttonText. 
+        // note: Việc đổi chữ "WAIT" / "END" giờ đã được BattleUIManager_A quản lý triệt để khi đánh bài,
+        // xóa ở đây để tránh xung đột 2 script cùng tranh nhau đổi chữ.
     }
 
     // Khi hơ chuột VÀO nút này

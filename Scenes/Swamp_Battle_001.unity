@@ -824,6 +824,7 @@ MonoBehaviour:
     m_Bits: 8192
   auraBox: {fileID: 1224018398}
   lockedEnemy: {fileID: 0}
+  isHoldingCard: 0
   playerLayerName: PlayerGridLayerA001
   isTacticalMoveMode: 0
 --- !u!4 &195112390
@@ -1162,7 +1163,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3361295320415067024, guid: c40bebbdb89282e4ca229a4cb4acc009, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3491610283783340419, guid: c40bebbdb89282e4ca229a4cb4acc009, type: 3}
       propertyPath: m_Layer
@@ -1334,7 +1335,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8290638940898614096, guid: c40bebbdb89282e4ca229a4cb4acc009, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8666496457625829866, guid: c40bebbdb89282e4ca229a4cb4acc009, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1391,7 +1392,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8290638940898614096, guid: c40bebbdb89282e4ca229a4cb4acc009, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1869274651}
   m_SourcePrefab: {fileID: 100100000, guid: c40bebbdb89282e4ca229a4cb4acc009, type: 3}
 --- !u!1 &359595374
 GameObject:
@@ -1676,6 +1680,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &417686027 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8666496457625829866, guid: c40bebbdb89282e4ca229a4cb4acc009, type: 3}
+  m_PrefabInstance: {fileID: 292238149}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &434449894
 GameObject:
   m_ObjectHideFlags: 0
@@ -1735,7 +1744,6 @@ GameObject:
   - component: {fileID: 473369273}
   - component: {fileID: 473369272}
   - component: {fileID: 473369275}
-  - component: {fileID: 473369274}
   m_Layer: 0
   m_Name: VCam_Tactical
   m_TagString: Untagged
@@ -1801,24 +1809,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 45, y: 180, z: 0}
---- !u!114 &473369274
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 473369271}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbff1f03865f97c4784e7bda92f38497, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FreeCamera
-  moveSpeed: 30
-  heightSpeed: 20
-  lookSpeed: 2
-  keyRotateSpeed: 60
-  minPitch: 20
-  maxPitch: 85
 --- !u!114 &473369275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3378,11 +3368,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3263151544449554228, guid: c40bebbdb89282e4ca229a4cb4acc009, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3361295320415067024, guid: c40bebbdb89282e4ca229a4cb4acc009, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3491610283783340419, guid: c40bebbdb89282e4ca229a4cb4acc009, type: 3}
       propertyPath: m_Layer
@@ -3554,7 +3544,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8290638940898614096, guid: c40bebbdb89282e4ca229a4cb4acc009, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 8666496457625829866, guid: c40bebbdb89282e4ca229a4cb4acc009, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3795,7 +3785,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3361295320415067024, guid: c40bebbdb89282e4ca229a4cb4acc009, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3491610283783340419, guid: c40bebbdb89282e4ca229a4cb4acc009, type: 3}
       propertyPath: m_Layer
@@ -3967,7 +3957,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8290638940898614096, guid: c40bebbdb89282e4ca229a4cb4acc009, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 8666496457625829866, guid: c40bebbdb89282e4ca229a4cb4acc009, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4024,7 +4014,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8290638940898614096, guid: c40bebbdb89282e4ca229a4cb4acc009, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1258641531}
   m_SourcePrefab: {fileID: 100100000, guid: c40bebbdb89282e4ca229a4cb4acc009, type: 3}
 --- !u!1 &733516936
 GameObject:
@@ -4979,7 +4972,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BattleUIManager_A
   vcamDefault: {fileID: 1810053090}
   vcamTactical: {fileID: 473369272}
-  freeCameraScript: {fileID: 473369274}
+  freeCameraScript: {fileID: 0}
   activeCharacter: {fileID: 1847212286}
   isLargeCharacter: 0
   battleManager: {fileID: 1604168288}
@@ -5235,11 +5228,16 @@ MonoBehaviour:
     m_Bits: 512
   allyLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 6144
   activePlayerUnit: {fileID: 1847212286}
   playerMoveDistance: 2
   activeCells: []
   validMoveCells: []
+--- !u!4 &850242607 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8666496457625829866, guid: c40bebbdb89282e4ca229a4cb4acc009, type: 3}
+  m_PrefabInstance: {fileID: 729980685}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &860226818
 GameObject:
   m_ObjectHideFlags: 0
@@ -7335,6 +7333,34 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1244257425}
   m_CullTransparentMesh: 1
+--- !u!1 &1258641525 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8290638940898614096, guid: c40bebbdb89282e4ca229a4cb4acc009, type: 3}
+  m_PrefabInstance: {fileID: 729980685}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &1258641531
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1258641525}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1283124961
 GameObject:
   m_ObjectHideFlags: 0
@@ -8691,6 +8717,7 @@ MonoBehaviour:
   avatarDropDepth: -50
   ghostWidthInPlace: 0
   ghostWidthJump: 30
+  showDebugLogs: 1
   timelineViewport: {fileID: 0}
   scrollSpeed: 600
 --- !u!4 &1590955968
@@ -8741,6 +8768,7 @@ MonoBehaviour:
   handManager: {fileID: 1025197470}
   timelineManager: {fileID: 1590955967}
   statusUI: {fileID: 1865631476}
+  uiManager: {fileID: 826811498}
   currentRoundCount: 1
   anomalyManager: {fileID: 434449896}
   aiManager: {fileID: 400997796}
@@ -8750,15 +8778,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bf63456bcfbef0344b64c5daf5c7984b, type: 2}
   enemyTeamData:
   - {fileID: 11400000, guid: 3d10c19c9aa5dee4b82ea97f14a5d6a2, type: 2}
-  playerDeckData: {fileID: 11400000, guid: f66a7a212125769419a9f1b10525a812, type: 2}
-  baseItemDrawAmount: 6
-  baseSkillDrawAmount: 6
-  itemDrawPile: []
-  itemHand: []
-  itemDiscardPile: []
-  skillDrawPile: []
-  skillHand: []
-  skillDiscardPile: []
+  playerModels:
+  - {fileID: 1847212286}
+  - {fileID: 850242607}
+  - {fileID: 417686027}
+  enemyModels:
+  - {fileID: 1888602965}
+  baseItemDrawAmount: 3
+  baseSkillDrawAmount: 3
   allUnitsInBattle: []
   normalTurnQueue: []
   waitTurnQueue: []
@@ -8771,6 +8798,13 @@ MonoBehaviour:
     currentAP: 0
     currentAGI: 0
     baseData: {fileID: 0}
+    unitTransform: {fileID: 0}
+    itemDrawPile: []
+    itemHand: []
+    itemDiscardPile: []
+    skillDrawPile: []
+    skillHand: []
+    skillDiscardPile: []
 --- !u!4 &1604168289
 Transform:
   m_ObjectHideFlags: 0
@@ -9697,6 +9731,34 @@ MonoBehaviour:
   slideSpeed: 10
   showX: -65
   hideX: 35
+--- !u!1 &1869274645 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8290638940898614096, guid: c40bebbdb89282e4ca229a4cb4acc009, type: 3}
+  m_PrefabInstance: {fileID: 292238149}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &1869274651
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869274645}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1887115030
 GameObject:
   m_ObjectHideFlags: 0
@@ -9795,6 +9857,11 @@ MonoBehaviour:
   scrollSpeed: 300
   posForItems: {x: -120, y: 60}
   posForSkills: {x: 380, y: 60}
+--- !u!4 &1888602965 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 487235704023691866, guid: 78422b9dd61c1fb40b0f94bb469acce9, type: 3}
+  m_PrefabInstance: {fileID: 1935810971}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1929058597
 GameObject:
   m_ObjectHideFlags: 0

@@ -45,13 +45,8 @@ public class BattleUIManager_A : MonoBehaviour
     [HideInInspector] public float baseCameraDistance = 3f;
     [HideInInspector] public float cameraHeightOffset = 1.7f;
 
-    [Header("--- 🚀 THUẬT TOÁN BIỂU ĐỒ (KHOẢNG CÁCH TUYỆT ĐỐI) ---")]
     public bool useAutoCameraTuning = true;
-
-    [Tooltip("Trục Ngang (Time) LÀ KHOẢNG CÁCH THỰC. Trục Dọc (Value) LÀ BASE DISTANCE")]
     public AnimationCurve distanceCurve;
-
-    [Tooltip("Trục Ngang (Time) LÀ KHOẢNG CÁCH THỰC. Trục Dọc (Value) LÀ CAMERA HEIGHT")]
     public AnimationCurve heightCurve;
 
     private Transform currentEnemyTarget = null;
@@ -65,11 +60,10 @@ public class BattleUIManager_A : MonoBehaviour
         if (normalBottomUIPanel != null) normalBottomUIPanel.SetActive(true);
         if (tacticalButtonsPanel != null) tacticalButtonsPanel.SetActive(false);
 
-        // 💡 BẬT CẢ 2 CAMERA VÀ THIẾT LẬP PRIORITY ĐỂ BLENDING MƯỢT MÀ
         if (vcamDefault != null)
         {
             vcamDefault.gameObject.SetActive(true);
-            vcamDefault.Priority = 20; // Đặt quyền ưu tiên cao hơn lúc khởi đầu
+            vcamDefault.Priority = 20;
             vcamDefault.Target.TrackingTarget = null;
             vcamDefault.Target.LookAtTarget = null;
             defaultDefaultRotation = vcamDefault.transform.rotation;
@@ -78,7 +72,7 @@ public class BattleUIManager_A : MonoBehaviour
         if (vcamTactical != null)
         {
             vcamTactical.gameObject.SetActive(true);
-            vcamTactical.Priority = 10; // Đặt quyền ưu tiên thấp hơn để chạy ngầm
+            vcamTactical.Priority = 10;
             defaultTacticalYRotation = vcamTactical.transform.eulerAngles.y;
         }
 
@@ -89,13 +83,22 @@ public class BattleUIManager_A : MonoBehaviour
     public void FocusEnemy(Transform enemyTarget)
     {
         currentEnemyTarget = enemyTarget;
+
+        if (currentEnemyTarget != null && activeCharacter != null)
+        {
+            Vector3 lookDir = currentEnemyTarget.position - activeCharacter.position;
+            lookDir.y = 0;
+
+            if (lookDir != Vector3.zero)
+            {
+                activeCharacter.rotation = Quaternion.LookRotation(lookDir);
+            }
+        }
     }
 
-    // 💡 HÀM MỚI: Gọi để gán Focus và tự động reset Camera về Default
     public void SetActiveCharacterFocus(Transform newCharacter)
     {
         activeCharacter = newCharacter;
-        // Trả camera về góc Default nếu trước đó người chơi đang ngắm Grid chưa thoát ra
         if (vcamTactical != null && vcamTactical.Priority > 10)
         {
             CancelMoveMode();
@@ -104,14 +107,10 @@ public class BattleUIManager_A : MonoBehaviour
 
     void Update()
     {
-        // Kiểm tra xem camera Default có đang chiếm quyền không (Priority lớn hơn Tactical)
         if (vcamDefault != null && vcamDefault.Priority > vcamTactical.Priority)
         {
             if (currentEnemyTarget != null && activeCharacter != null)
             {
-                // ==========================================================
-                // 🚀 ĐỌC BIỂU ĐỒ BẰNG KHOẢNG CÁCH THỰC TẾ TRONG UNITY
-                // ==========================================================
                 if (useAutoCameraTuning)
                 {
                     float actualZDist = Mathf.Abs(currentEnemyTarget.position.z - activeCharacter.position.z);
@@ -119,9 +118,6 @@ public class BattleUIManager_A : MonoBehaviour
                     cameraHeightOffset = heightCurve.Evaluate(actualZDist);
                 }
 
-                // ==========================================================
-                // CÁC HÀM XỬ LÝ GÓC NHÌN VÀ VỊ TRÍ
-                // ==========================================================
                 float enemyHeight = 1f;
                 Collider enemyCol = currentEnemyTarget.GetComponent<Collider>();
                 if (enemyCol != null) enemyHeight = enemyCol.bounds.size.y;
@@ -145,7 +141,6 @@ public class BattleUIManager_A : MonoBehaviour
             else if (activeCharacter != null)
             {
                 Vector3 targetDefaultPosition = activeCharacter.position + defaultCameraOffset;
-
                 vcamDefault.transform.position = Vector3.Lerp(vcamDefault.transform.position, targetDefaultPosition, Time.deltaTime * cameraMoveSpeed);
                 vcamDefault.transform.rotation = Quaternion.Slerp(vcamDefault.transform.rotation, defaultDefaultRotation, Time.deltaTime * cameraMoveSpeed);
             }
@@ -163,7 +158,6 @@ public class BattleUIManager_A : MonoBehaviour
         if (battleGrid != null) battleGrid.SetGridVisibility(true, false);
         if (gridMouseController != null) gridMouseController.isTacticalMoveMode = true;
 
-        // 💡 CHUYỂN GÓC NHÌN BẰNG PRIORITY MƯỢT MÀ
         if (vcamDefault != null) vcamDefault.Priority = 10;
         if (vcamTactical != null) vcamTactical.Priority = 20;
 
@@ -185,35 +179,84 @@ public class BattleUIManager_A : MonoBehaviour
         if (vcamTactical != null && activeCharacter != null)
         {
             if (freeCameraScript != null) freeCameraScript.enabled = false;
-
             vcamTactical.Target.TrackingTarget = activeCharacter;
             vcamTactical.Target.LookAtTarget = null;
-
             vcamTactical.transform.rotation = Quaternion.Euler(45f, defaultTacticalYRotation, 0f);
         }
     }
 
     public void ExecuteMovementToCell(Vector3 targetPos)
     {
-        if (playerStats != null && playerStats.currentAP >= 3)
+        if (battleManager == null || battleManager.currentActiveUnit == null) return;
+        BattleUnit activeUnit = battleManager.currentActiveUnit;
+
+        if (activeUnit.currentAP >= 3)
         {
-            playerStats.SpendAP(3);
+            activeUnit.currentAP -= 3;
+            if (playerStats != null) playerStats.SpendAP(3);
+
+            hasMovedThisPhase = true;
+            RefreshWaitEndButton();
+
+            if (battleGrid != null)
+            {
+                if (battleGrid.activePlayerUnit == null) battleGrid.activePlayerUnit = activeCharacter;
+                battleGrid.RefreshGridTacticalColors();
+            }
+
+            try { if (onAPChanged != null) onAPChanged.Invoke(); } catch { }
 
             if (activeCharacter != null)
             {
-                CharacterController cc = activeCharacter.GetComponent<CharacterController>();
-                if (cc != null) cc.enabled = false;
-                activeCharacter.position = new Vector3(targetPos.x, activeCharacter.position.y, targetPos.z);
-                if (cc != null) cc.enabled = true;
+                if (battleManager != null && battleManager.gameObject.activeInHierarchy)
+                {
+                    battleManager.StartCoroutine(SmoothMoveToCell(activeCharacter, targetPos));
+                }
+                else
+                {
+                    gameObject.SetActive(true);
+                    StartCoroutine(SmoothMoveToCell(activeCharacter, targetPos));
+                }
             }
-            hasMovedThisPhase = true;
-            if (battleGrid != null) battleGrid.RefreshGridTacticalColors();
-            onAPChanged?.Invoke();
         }
+    }
+
+    public System.Collections.IEnumerator SmoothMoveToCell(Transform unitTransform, Vector3 targetPos)
+    {
+        if (unitTransform == null) yield break;
+
+        CharacterController cc = unitTransform.GetComponent<CharacterController>();
+        if (cc != null) cc.enabled = false;
+
+        Animator anim = unitTransform.GetComponentInChildren<Animator>();
+        if (anim != null) anim.SetFloat("Speed", 1f);
+
+        // Xoay mặt nhìn về hướng ô đất đích để chạy tới
+        Vector3 moveDir = (targetPos - unitTransform.position).normalized;
+        Vector3 lookDir = new Vector3(moveDir.x, 0, moveDir.z);
+        if (lookDir != Vector3.zero) unitTransform.rotation = Quaternion.LookRotation(lookDir);
+
+        float moveSpeed = 8f;
+
+        while (Vector3.Distance(new Vector3(unitTransform.position.x, 0, unitTransform.position.z),
+                                new Vector3(targetPos.x, 0, targetPos.z)) > 0.1f)
+        {
+            unitTransform.position = Vector3.MoveTowards(unitTransform.position,
+                new Vector3(targetPos.x, unitTransform.position.y, targetPos.z), moveSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        unitTransform.position = new Vector3(targetPos.x, unitTransform.position.y, targetPos.z);
+        if (cc != null) cc.enabled = true;
+
+        if (anim != null) anim.SetFloat("Speed", 0f);
     }
 
     public void UndoMovement()
     {
+        if (battleManager == null || battleManager.currentActiveUnit == null) return;
+        BattleUnit activeUnit = battleManager.currentActiveUnit;
+
         if (activeCharacter != null)
         {
             CharacterController cc = activeCharacter.GetComponent<CharacterController>();
@@ -221,16 +264,23 @@ public class BattleUIManager_A : MonoBehaviour
             activeCharacter.position = originalPosition;
             if (cc != null) cc.enabled = true;
         }
-        if (playerStats != null) { playerStats.currentAP += 3; playerStats.UpdateUI(); }
+
+        activeUnit.currentAP += 3;
+        if (playerStats != null)
+        {
+            playerStats.currentAP += 3;
+            playerStats.UpdateUI();
+        }
+
         hasMovedThisPhase = false;
+        RefreshWaitEndButton();
+
         if (battleGrid != null) battleGrid.RefreshGridTacticalColors();
-        onAPChanged?.Invoke();
+
+        try { if (onAPChanged != null) onAPChanged.Invoke(); } catch { }
     }
 
-    public void OnBackButtonClicked()
-    {
-        CancelMoveMode();
-    }
+    public void OnBackButtonClicked() { CancelMoveMode(); }
 
     public void CancelMoveMode()
     {
@@ -239,7 +289,6 @@ public class BattleUIManager_A : MonoBehaviour
 
         if (freeCameraScript != null) freeCameraScript.enabled = false;
 
-        // 💡 TRẢ LẠI GÓC NHÌN DEFAULT BẰNG PRIORITY
         if (vcamTactical != null) vcamTactical.Priority = 10;
         if (vcamDefault != null)
         {
@@ -251,17 +300,66 @@ public class BattleUIManager_A : MonoBehaviour
         if (tacticalButtonsPanel != null) tacticalButtonsPanel.SetActive(false);
         if (normalBottomUIPanel != null) normalBottomUIPanel.SetActive(true);
 
-        onAPChanged?.Invoke();
+        // =========================================================================
+        // 💡 ÁP DỤNG ĐỀ XUẤT CỦA BẠN: Khi bấm nút Back thoát lưới, 
+        // nếu hệ thống đang ghi nhận có Quái vật bị khóa Target, ép nhân vật xoay mặt nhìn thẳng vào nó lập tức!
+        // =========================================================================
+        if (currentEnemyTarget != null && activeCharacter != null)
+        {
+            Vector3 lookDir = currentEnemyTarget.position - activeCharacter.position;
+            lookDir.y = 0; // Giữ cân bằng trục Y chống ngửa người
+            if (lookDir != Vector3.zero)
+            {
+                activeCharacter.rotation = Quaternion.LookRotation(lookDir);
+                Debug.Log($"🔄 [BACK] Đã tự động xoay nhân vật nhìn thẳng về phía mục tiêu: {currentEnemyTarget.name}");
+            }
+        }
+
+        try { if (onAPChanged != null) onAPChanged.Invoke(); } catch { }
     }
 
-    public void ResetTurnState() { hasPlayedCardThisTurn = false; if (waitEndText != null) waitEndText.text = "WAIT"; }
-    public void MarkCardPlayed() { hasPlayedCardThisTurn = true; if (waitEndText != null) waitEndText.text = "END"; }
-    public void SetWaitPhaseState() { hasPlayedCardThisTurn = true; if (waitEndText != null) waitEndText.text = "END"; }
+    public void RefreshWaitEndButton()
+    {
+        if (waitEndText != null)
+        {
+            if (hasPlayedCardThisTurn || hasMovedThisPhase)
+                waitEndText.text = "END";
+            else
+                waitEndText.text = "WAIT";
+        }
+    }
+
+    public void ResetTurnState()
+    {
+        hasPlayedCardThisTurn = false;
+        hasMovedThisPhase = false;
+        RefreshWaitEndButton();
+    }
+
+    public void MarkCardPlayed()
+    {
+        hasPlayedCardThisTurn = true;
+        RefreshWaitEndButton();
+    }
+
+    // 💡 ĐÃ BỔ SUNG LẠI HÀM NÀY: Giúp sửa triệt để lỗi biên dịch đỏ lòm trên BattleManager
+    public void SetWaitPhaseState()
+    {
+        hasPlayedCardThisTurn = true;
+        RefreshWaitEndButton();
+    }
 
     public void OnWaitOrEndClicked()
     {
-        if (!hasPlayedCardThisTurn) { if (battleManager != null) battleManager.OnWaitButtonClicked(); }
-        else { if (battleManager != null) battleManager.PlayerEndTurn(); ResetTurnState(); }
+        if (!hasPlayedCardThisTurn && !hasMovedThisPhase)
+        {
+            if (battleManager != null) battleManager.OnWaitButtonClicked();
+        }
+        else
+        {
+            if (battleManager != null) battleManager.PlayerEndTurn();
+            ResetTurnState();
+        }
     }
 
     public void OnRunClicked() { if (runConfirmPanel != null) runConfirmPanel.SetActive(true); }

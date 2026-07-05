@@ -43,7 +43,7 @@ public class HandManager : MonoBehaviour
 
     void Update()
     {
-        // 💡 ĐÃ SỬA: Đồng bộ dùng wasReleasedThisFrame (Lúc thả chuột ra)
+        // 💡 Đồng bộ dùng wasReleasedThisFrame (Lúc thả chuột ra)
         if (Mouse.current != null && Mouse.current.rightButton.wasReleasedThisFrame)
         {
             if (currentSelectedCard != null)
@@ -89,12 +89,18 @@ public class HandManager : MonoBehaviour
 
     public void PlayCard(CardDisplay cardToPlay)
     {
-        if (playerStats == null || isAnimatingAvatar) return;
+        if (playerStats == null || isAnimatingAvatar || battleManager == null) return;
 
         int delayValue = 0;
+
+        // 💡 [FIX ĐỒNG BỘ DỮ LIỆU]: Trừ AP/MP thẳng vào Data thật của nhân vật đang đánh
+        BattleUnit activeUnit = battleManager.currentActiveUnit;
+
         if (cardToPlay.currentItemData != null)
         {
             playerStats.SpendAP(cardToPlay.currentItemData.apCost);
+            if (activeUnit != null) activeUnit.currentAP -= cardToPlay.currentItemData.apCost; // Đồng bộ Data thật
+
             delayValue = cardToPlay.currentItemData.delayAGI;
             if (tokenManager != null) tokenManager.AddTokens(cardToPlay.currentItemData.tokensToAdd);
         }
@@ -102,6 +108,13 @@ public class HandManager : MonoBehaviour
         {
             playerStats.SpendAP(cardToPlay.currentSkillData.apCost);
             playerStats.SpendMP(cardToPlay.currentSkillData.mpCost);
+
+            if (activeUnit != null)
+            {
+                activeUnit.currentAP -= cardToPlay.currentSkillData.apCost; // Đồng bộ Data thật
+                activeUnit.currentMP -= cardToPlay.currentSkillData.mpCost;
+            }
+
             delayValue = cardToPlay.currentSkillData.delayAGI;
             if (tokenManager != null) tokenManager.AddTokens(cardToPlay.currentSkillData.tokensToAdd);
         }
@@ -135,6 +148,7 @@ public class HandManager : MonoBehaviour
         foreach (Transform child in skillHandPanel) Destroy(child.gameObject);
         activeCardsInHand.Clear();
         currentSelectedCard = null;
+
         foreach (ItemCardInstance itemInst in realItemHand)
         {
             GameObject newCard = Instantiate(cardPrefab, itemHandPanel);
@@ -151,6 +165,16 @@ public class HandManager : MonoBehaviour
             activeCardsInHand.Add(display);
         }
         StartCoroutine(RebuildLayoutNextFrame());
+    }
+
+    // 💡 HÀM MỚI: Ẩn toàn bộ bài trên tay đi khi đến lượt của AI
+    public void HideHandUI()
+    {
+        foreach (Transform child in itemHandPanel) Destroy(child.gameObject);
+        foreach (Transform child in skillHandPanel) Destroy(child.gameObject);
+        activeCardsInHand.Clear();
+        currentSelectedCard = null;
+        if (detailManager != null) detailManager.HideDetailPanel();
     }
 
     IEnumerator RebuildLayoutNextFrame()

@@ -19,6 +19,7 @@ MonoBehaviour:
   level: 1
   skillPointsPerLevel: 5
   currentSkillPoints: 0
+  personalDeck: {fileID: 11400000, guid: b7a1537066fcff047af689f6bdad96c8, type: 2}
   combatStats:
     maxHP: 110
     maxMP: 50

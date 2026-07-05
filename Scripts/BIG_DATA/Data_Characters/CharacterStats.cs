@@ -19,6 +19,11 @@ public class CharacterStats : ScriptableObject
     public int skillPointsPerLevel = 5;
     public int currentSkillPoints = 0;
 
+    // 💡 BỔ SUNG MỚI: Mỗi nhân vật tự mang bộ bài của mình
+    // note: Hãy tạo file DeckData và kéo thả vào ô này cho từng nhân vật trong thư mục Data
+    [Header("--- BỘ BÀI MANG VÀO TRẬN ---")]
+    public DeckData personalDeck;
+
     [Header("--- CHỈ SỐ CHIẾN ĐẤU ---")]
     [Space(10)]
     public CombatStats combatStats;
@@ -40,7 +45,7 @@ public class CharacterStats : ScriptableObject
 // ==========================================
 
 [System.Serializable]
-// gọi hàm cộng điểm từ Visual Scripting hoặc file code khác dễ dàng và không bị lỗi.
+// note: gọi hàm cộng điểm từ Visual Scripting hoặc file code khác dễ dàng và không bị lỗi.
 public class Stat
 {
     [Tooltip("Tài năng bẩm sinh của nhân vật (Khóa từ 0 đến 10)")]
@@ -52,7 +57,7 @@ public class Stat
 
     public int Total => baseValue + bonusValue;
 
-    // node: ĐÂY LÀ CHÌA KHÓA CHO SỰ KIỆN VÀ VISUAL SCRIPTING!
+    // note: ĐÂY LÀ CHÌA KHÓA CHO SỰ KIỆN VÀ VISUAL SCRIPTING!
     // Bất kỳ sự kiện nào (+1 hay +5) cũng chỉ cần gọi hàm này và ném con số vào.
     public void AddBonus(int amount)
     {
@@ -96,6 +101,7 @@ public struct UpgradeSystem
     public int hpGainPerUpgrade;
     public int mpGainPerUpgrade;
 }
+
 [System.Serializable]
 public struct ManagementStats
 {

@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 
+// ==========================================
+// 💡 ĐÃ KHÔI PHỤC: ĐỊNH NGHĨA TRẠNG THÁI TRẬN ĐẤU
+// note: Enum này bắt buộc phải nằm ở đây để biến "state" bên dưới có dữ liệu hoạt động!
+// ==========================================
 public enum BattleState { Start, DrawCards, NormalTurnPhase, WaitTurnPhase, Won, Lost }
 
 public class BattleManager : MonoBehaviour
@@ -9,42 +13,33 @@ public class BattleManager : MonoBehaviour
     [Header("--- THÔNG TIN TRẬN ĐẤU ---")]
     public BattleState state;
 
-    [Header("--- KẾT NỐI UI CHÍNH ---")]
+    [Header("--- KẾT NỐI UI CHÍNH VÀ CAMERA ---")]
     public HandManager handManager;
-
-    [Header("--- KẾT NỐI UI LƯỢT ĐI ---")]
     public TurnTimelineManager timelineManager;
-
-    [Header("--- KẾT NỐI PANEL STATUS (TURN COUNTER) ---")]
     public AnomalyAndTurnStatusPanelUI statusUI;
+
+    // 💡 KẾT NỐI: Cầu nối quản lý UI & Camera trận đấu (Cinemachine Priority)
+    public BattleUIManager_A uiManager;
+
     public int currentRoundCount = 1;
 
-    [Header("--- KẾT NỐI NGƯỜI QUẢN LÝ DỊ THƯỜNG ---")]
+    [Header("--- KẾT NỐI NGƯỜI QUẢN LÝ KHÁC ---")]
     public AnomalyManager anomalyManager;
+    public BattleAIManager aiManager;
 
-    [Header("--- KẾT NỐI NGƯỜI QUẢN LÝ AI ---")]
-    public BattleAIManager aiManager; // Kéo cục Battle_AI_System vào đây
-
-    [Header("--- DANH SÁCH THAM CHIẾN ---")]
+    [Header("--- DANH SÁCH THAM CHIẾN (DATA GỐC) ---")]
     public List<CharacterStats> playerTeamData;
     public List<CharacterStats> enemyTeamData;
 
-    [Header("--- DỮ LIỆU BỘ BÀI MANG VÀO TRẬN ---")]
-    public DeckData playerDeckData;
+    // 💡 ĐỒNG BỘ: Nơi kéo thả Model 3D thực tế ngoài Scene vào trận đấu
+    // note: Kéo từ Hierarchy vào đúng thứ tự tương ứng với Data gốc ở trên
+    [Header("--- DIỄN VIÊN 3D (KÉO TỪ HIERARCHY VÀO ĐÂY) ---")]
+    public List<Transform> playerModels;
+    public List<Transform> enemyModels;
 
     [Header("--- LUẬT BỐC BÀI ---")]
     public int baseItemDrawAmount = 3;
     public int baseSkillDrawAmount = 3;
-
-    [Header("--- QUẢN LÝ THẺ ITEM ---")]
-    public List<ItemCardInstance> itemDrawPile = new List<ItemCardInstance>();
-    public List<ItemCardInstance> itemHand = new List<ItemCardInstance>();
-    public List<ItemCardInstance> itemDiscardPile = new List<ItemCardInstance>();
-
-    [Header("--- QUẢN LÝ THẺ SKILL ---")]
-    public List<SkillCardInstance> skillDrawPile = new List<SkillCardInstance>();
-    public List<SkillCardInstance> skillHand = new List<SkillCardInstance>();
-    public List<SkillCardInstance> skillDiscardPile = new List<SkillCardInstance>();
 
     [Header("--- DANH SÁCH THỰC THỂ SỐNG ---")]
     public List<BattleUnit> allUnitsInBattle = new List<BattleUnit>();
@@ -58,7 +53,6 @@ public class BattleManager : MonoBehaviour
     void Start()
     {
         if (timelineManager == null) timelineManager = FindAnyObjectByType<TurnTimelineManager>();
-
         state = BattleState.Start;
         SetupBattle();
     }
@@ -66,26 +60,48 @@ public class BattleManager : MonoBehaviour
     void SetupBattle()
     {
         Debug.Log("TRẬN ĐẤU BẮT ĐẦU!");
-        foreach (var data in playerTeamData) allUnitsInBattle.Add(new BattleUnit(data));
-        foreach (var data in enemyTeamData) allUnitsInBattle.Add(new BattleUnit(data));
 
-        InitializeDeck();
+        // Gắn xương thịt (Model 3D) và Nạp bài cá nhân cho phe Player
+        for (int i = 0; i < playerTeamData.Count; i++)
+        {
+            BattleUnit unit = new BattleUnit(playerTeamData[i]);
+            if (i < playerModels.Count) unit.unitTransform = playerModels[i];
+            InitializePersonalDeck(unit);
+            allUnitsInBattle.Add(unit);
+        }
+
+        // Gắn xương thịt (Model 3D) và Nạp bài cá nhân cho phe Địch / NPC
+        for (int i = 0; i < enemyTeamData.Count; i++)
+        {
+            BattleUnit unit = new BattleUnit(enemyTeamData[i]);
+            if (i < enemyModels.Count) unit.unitTransform = enemyModels[i];
+            InitializePersonalDeck(unit);
+            allUnitsInBattle.Add(unit);
+        }
 
         if (anomalyManager != null) anomalyManager.InitializeAnomaliesOnStart();
-
         StartNewRound();
     }
 
-    void InitializeDeck()
+    // 💡 KHỞI TẠO BỘ BÀI RIÊNG CỦA TỪNG NHÂN VẬT
+    void InitializePersonalDeck(BattleUnit unit)
     {
-        if (playerDeckData == null) return;
-        foreach (ItemCardData itemData in playerDeckData.activeItemCards)
-            itemDrawPile.Add(new ItemCardInstance(itemData, itemData.maxDurability));
+        if (unit.baseData.personalDeck == null) return;
 
-        foreach (SkillCardData skillData in playerDeckData.activeSkillCards)
-            skillDiscardPile.Add(new SkillCardInstance(skillData));
+        // Nạp và kiểm tra Item chống ô rỗng (None) ngoài Inspector
+        foreach (ItemCardData itemData in unit.baseData.personalDeck.activeItemCards)
+        {
+            if (itemData != null) unit.itemDrawPile.Add(new ItemCardInstance(itemData, itemData.maxDurability));
+        }
 
-        ShuffleList(itemDrawPile); ShuffleList(skillDrawPile);
+        // Nạp và kiểm tra Skill chống ô rỗng (None) ngoài Inspector
+        foreach (SkillCardData skillData in unit.baseData.personalDeck.activeSkillCards)
+        {
+            if (skillData != null) unit.skillDrawPile.Add(new SkillCardInstance(skillData));
+        }
+
+        ShuffleList(unit.itemDrawPile);
+        ShuffleList(unit.skillDrawPile);
     }
 
     void ShuffleList<T>(List<T> list)
@@ -104,10 +120,7 @@ public class BattleManager : MonoBehaviour
     // ==========================================
     void StartNewRound()
     {
-        if (state != BattleState.Start)
-        {
-            currentRoundCount++;
-        }
+        if (state != BattleState.Start) currentRoundCount++;
         if (statusUI != null) statusUI.UpdateTurnCounter(currentRoundCount);
 
         if (anomalyManager != null) anomalyManager.ProcessAnomalies(AnomalyTriggerTime.TurnStart);
@@ -123,25 +136,56 @@ public class BattleManager : MonoBehaviour
         normalTurnQueue = normalTurnQueue.OrderByDescending(unit => unit.currentAGI).ToList();
         waitTurnQueue.Clear();
 
-        if (handManager != null && handManager.playerStats != null)
+        // 💡 BƯỚC 3: Hồi lại 3 AP mặc định cho TẤT CẢ mọi người ở đầu Hiệp mới
+        foreach (var unit in allUnitsInBattle)
         {
-            handManager.playerStats.currentAP = 3;
-            handManager.playerStats.UpdateUI();
+            unit.currentAP = 3;
         }
 
         state = BattleState.DrawCards;
         DrawPhase();
     }
 
+    // 💡 BƯỚC 2: Rút bài Cách B (Tất cả mọi người đồng loạt bốc đủ bài vào đầu hiệp)
     void DrawPhase()
     {
-        DiscardEntireHand();
-        DrawItemCards(baseItemDrawAmount);
-        DrawSkillCards(baseSkillDrawAmount);
+        foreach (BattleUnit unit in allUnitsInBattle)
+        {
+            // Vứt hết bài cũ còn sót trên tay vào mộ (Discard Pile) trước khi bốc mới
+            unit.itemDiscardPile.AddRange(unit.itemHand); unit.itemHand.Clear();
+            unit.skillDiscardPile.AddRange(unit.skillHand); unit.skillHand.Clear();
 
-        if (handManager != null) handManager.DrawRealCards(itemHand, skillHand);
+            // Tiến hành rút bài từ Draw Pile cá nhân
+            DrawCardsForUnit(unit, baseItemDrawAmount, baseSkillDrawAmount);
+        }
+
         state = BattleState.NormalTurnPhase;
         NextTurn();
+    }
+
+    void DrawCardsForUnit(BattleUnit unit, int itemAmount, int skillAmount)
+    {
+        // Rút Item Card
+        for (int i = 0; i < itemAmount; i++)
+        {
+            if (unit.itemDrawPile.Count == 0)
+            {
+                if (unit.itemDiscardPile.Count == 0) break;
+                unit.itemDrawPile.AddRange(unit.itemDiscardPile); unit.itemDiscardPile.Clear(); ShuffleList(unit.itemDrawPile);
+            }
+            if (unit.itemDrawPile.Count > 0) { unit.itemHand.Add(unit.itemDrawPile[0]); unit.itemDrawPile.RemoveAt(0); }
+        }
+
+        // Rút Skill Card
+        for (int i = 0; i < skillAmount; i++)
+        {
+            if (unit.skillDrawPile.Count == 0)
+            {
+                if (unit.skillDiscardPile.Count == 0) break;
+                unit.skillDrawPile.AddRange(unit.skillDiscardPile); unit.skillDiscardPile.Clear(); ShuffleList(unit.skillDrawPile);
+            }
+            if (unit.skillDrawPile.Count > 0) { unit.skillHand.Add(unit.skillDrawPile[0]); unit.skillDrawPile.RemoveAt(0); }
+        }
     }
 
     void NextTurn()
@@ -161,29 +205,64 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("HẾT TURN 1! XÓA VẠCH NGĂN CÁCH VÀ BẮT ĐẦU TURN 2...");
+            Debug.Log("HẾT TURN 1! BẮT ĐẦU TURN 2...");
             StartNewRound();
             return;
         }
 
         if (timelineManager != null) timelineManager.RebuildTimeline(currentActiveUnit, normalTurnQueue, waitTurnQueue, nextRoundQueue);
-
-        // 💡 MỚI THÊM: ĐIỀU PHỐI QUYỀN ĐIỀU KHIỂN (PLAYER VS AI)
         HandleUnitTurnStart();
     }
 
-    // Hàm kiểm tra vai trò thực thể khi vào lượt
     void HandleUnitTurnStart()
     {
         if (currentActiveUnit == null) return;
 
+        // 💡 ĐỒNG BỘ: Đẩy dữ liệu vật lý (Transform) sang cho Camera và Lưới Grid
+        if (uiManager != null && currentActiveUnit.unitTransform != null)
+        {
+            // 1. Ra lệnh cho Camera focus cận cảnh vào nhân vật vừa tới lượt
+            uiManager.SetActiveCharacterFocus(currentActiveUnit.unitTransform);
+
+            // 2. Ra lệnh cho Lưới Grid chuyển tâm vẽ ô xanh về dưới chân nhân vật vừa tới lượt
+            if (uiManager.battleGrid != null)
+            {
+                uiManager.battleGrid.activePlayerUnit = currentActiveUnit.unitTransform;
+
+                // note: Chỉ vẽ lưới xanh nếu là nhân vật phe Ta (Player). Quái/NPC đi thì ẩn lưới đi.
+                if (currentActiveUnit.role == CharacterRole.Player)
+                {
+                    uiManager.battleGrid.RefreshGridTacticalColors();
+                }
+                else
+                {
+                    uiManager.battleGrid.validMoveCells.Clear();
+                    uiManager.battleGrid.SetGridVisibility(false, false);
+                }
+            }
+        }
+
         if (currentActiveUnit.role == CharacterRole.Player)
         {
-            Debug.Log($"[LƯỢT ĐIỀU KHIỂN] Đến lượt của: {currentActiveUnit.unitName}. Mở UI cho người chơi!");
+            Debug.Log($"[LƯỢT ĐIỀU KHIỂN] Đến lượt của: {currentActiveUnit.unitName}.");
+            if (handManager != null)
+            {
+                // Đẩy tay bài riêng của nhân vật này lên giao diện màn hình
+                handManager.DrawRealCards(currentActiveUnit.itemHand, currentActiveUnit.skillHand);
+
+                // Cập nhật các chỉ số máu, mana, AP thật của nhân vật này lên thanh HUD UI chính
+                handManager.playerStats.currentAP = currentActiveUnit.currentAP;
+                handManager.playerStats.currentMP = currentActiveUnit.currentMP;
+                handManager.playerStats.currentHP = currentActiveUnit.currentHP;
+                handManager.playerStats.maxHP = currentActiveUnit.baseData.combatStats.maxHP;
+                handManager.playerStats.maxMP = currentActiveUnit.baseData.combatStats.maxMP;
+                handManager.playerStats.UpdateUI();
+            }
         }
         else
         {
-            Debug.Log($"[LƯỢT TỰ ĐỘNG] {currentActiveUnit.unitName} ({currentActiveUnit.role}) đang tự động suy nghĩ...");
+            Debug.Log($"[LƯỢT TỰ ĐỘNG] {currentActiveUnit.unitName} đang tự động suy nghĩ...");
+            if (handManager != null) handManager.HideHandUI(); // Ẩn UI bài đi để người chơi không nhấn bậy được
             if (aiManager != null) aiManager.ExecuteAITurn(currentActiveUnit, this);
         }
     }
@@ -195,13 +274,8 @@ public class BattleManager : MonoBehaviour
     {
         if (state == BattleState.NormalTurnPhase || state == BattleState.WaitTurnPhase)
         {
-            Debug.Log($"[END] {currentActiveUnit.unitName} kết thúc lượt. Bị đẩy sang Turn 2!");
-
             currentActiveUnit.currentAGI = currentActiveUnit.baseData.combatStats.AGI;
-            currentActiveUnit.currentAP = 3;
-
             nextRoundQueue.Add(currentActiveUnit);
-
             NextTurn();
         }
     }
@@ -213,70 +287,33 @@ public class BattleManager : MonoBehaviour
     {
         if (state == BattleState.NormalTurnPhase)
         {
-            Debug.Log($"{currentActiveUnit.unitName} chọn WAIT! Lùi xuống cuối hiệp.");
             waitTurnQueue.Add(currentActiveUnit);
 
-            // 💡 [FIX HEROES 3]: Ép sắp xếp ngay lập tức: AGI thấp đứng trước, AGI cao bị đẩy xuống sau cùng
+            // [FIX LỖI HEROES 3]: Sắp xếp lại ngay lập tức: AGI thấp đứng trước, AGI cao bị đẩy xuống sau cùng
             waitTurnQueue = waitTurnQueue.OrderBy(unit => unit.currentAGI).ToList();
 
             if (timelineManager != null) timelineManager.RebuildTimeline(null, normalTurnQueue, waitTurnQueue, nextRoundQueue);
-
             NextTurn();
         }
         else if (state == BattleState.WaitTurnPhase)
         {
             currentActiveUnit.currentAGI = currentActiveUnit.baseData.combatStats.AGI;
-            currentActiveUnit.currentAP = 3;
             nextRoundQueue.Add(currentActiveUnit);
-
             NextTurn();
         }
     }
 
-    void DrawItemCards(int amount)
-    {
-        for (int i = 0; i < amount; i++)
-        {
-            if (itemDrawPile.Count == 0)
-            {
-                if (itemDiscardPile.Count == 0) break;
-                itemDrawPile.AddRange(itemDiscardPile); itemDiscardPile.Clear(); ShuffleList(itemDrawPile);
-            }
-            itemHand.Add(itemDrawPile[0]); itemDrawPile.RemoveAt(0);
-        }
-    }
-
-    void DrawSkillCards(int amount)
-    {
-        for (int i = 0; i < amount; i++)
-        {
-            if (skillDrawPile.Count == 0)
-            {
-                if (skillDiscardPile.Count == 0) break;
-                skillDrawPile.AddRange(skillDiscardPile); skillDiscardPile.Clear(); ShuffleList(skillDrawPile);
-            }
-            skillHand.Add(skillDrawPile[0]); skillDrawPile.RemoveAt(0);
-        }
-    }
-
-    void DiscardEntireHand()
-    {
-        itemDiscardPile.AddRange(itemHand); itemHand.Clear();
-        skillDiscardPile.AddRange(skillHand); skillHand.Clear();
-    }
-
     // ==========================================
-    // XỬ LÝ TRỪ AGI KHI ĐÁNH BÀI
+    // XỬ LÝ TRỪ AGI KHI ĐÁNH BÀI (DELAY)
     // ==========================================
     public void ApplyActionDelay(int delayAGI)
     {
         currentActiveUnit.currentAGI -= delayAGI;
-        Debug.Log($"{currentActiveUnit.unitName} dùng bài mất {delayAGI} AGI. AGI hiện tại: {currentActiveUnit.currentAGI}");
     }
 }
 
 // ==========================================
-// THỰC THỂ SỐNG TRONG TRẬN ĐẤU
+// THỰC THỂ SỐNG TRONG TRẬN ĐẤU (DATA + BỘ BÀI RIÊNG)
 // ==========================================
 [System.Serializable]
 public class BattleUnit
@@ -285,6 +322,18 @@ public class BattleUnit
     public CharacterRole role;
     public int currentHP; public int currentMP; public int currentAP; public int currentAGI;
     public CharacterStats baseData;
+
+    // Biến lưu trữ Model 3D ngoài Scene (để Camera & Grid bắt mục tiêu vật lý)
+    public Transform unitTransform;
+
+    // Bộ bài cá nhân lưu trữ động trong trận của riêng thực thể này
+    public List<ItemCardInstance> itemDrawPile = new List<ItemCardInstance>();
+    public List<ItemCardInstance> itemHand = new List<ItemCardInstance>();
+    public List<ItemCardInstance> itemDiscardPile = new List<ItemCardInstance>();
+
+    public List<SkillCardInstance> skillDrawPile = new List<SkillCardInstance>();
+    public List<SkillCardInstance> skillHand = new List<SkillCardInstance>();
+    public List<SkillCardInstance> skillDiscardPile = new List<SkillCardInstance>();
 
     public BattleUnit(CharacterStats data)
     {
